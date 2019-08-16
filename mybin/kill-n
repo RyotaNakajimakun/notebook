@@ -1,0 +1,34 @@
+#/bin/bash
+function kill-n () {
+    ProcessName=$1
+    kill `ps -ef | grep $ProcessName | awk '{print $2;}'`
+    return 0
+}
+
+function usage () {
+    cat <<EOF
+
+    Usage:
+        kill-n -f ProcessName
+    Options :
+        -h  help.
+        -f  You can not use this command without this option  
+        
+EOF
+
+return 0
+}
+
+if [[ $2="" ]] ;then 
+    usage 
+    exit
+fi
+
+while getopts hf OPTION; do
+
+    case $OPTION in
+        h) usage; exit 0;;
+        f) kill-n $2;;
+        ?) usage; exit 1;;
+    esac
+done
