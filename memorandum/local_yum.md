@@ -10,6 +10,7 @@ yum -y install createrepo repotrack
 
 ```
 REPOSITORY_DIR="/home/local_repository"
+REPOSITORY_NAME="local_repository"
 ```
 
 ```
@@ -20,21 +21,22 @@ mkdir -p $REPOSITORY_DIR
 createrepo $REPOSITORY_DIR
 ```
 
+yumコンフィグの追加
 ```
 echo "[local_repository]
 enabled=1
 name=localrepo
 gpgcheck=0
-baseurl=file://${REPOSITORY_DIR}
+baseurl=file://${REPOSITORY_DIR}" > /etc/yum.repos.d/${REPOSITORY_NAME}.repo
 ```
+
 ```
 yum clean all
 ```
 
 ```
-yum repolist |grep local
+yum repolist |grep ${REPOSITORY_NAME}
 ```
-
 
 ローカル保存
 ```
@@ -48,12 +50,13 @@ function download_package(){
 ```
 function dependency_download(){
     package=$1
-    repotrack $REPOSITORY_DIR/$package
+    repotrack $REPOSITORY_DIR $package
 }
 ```
+
 インストール
 ```
-yum -y --disablerep=/* --enablerepo=local install
+yum -y --disablerep=/* --enablerepo=$REPOSITORY_NAME install
 ```
 
 依存関係を気にせずインストール
