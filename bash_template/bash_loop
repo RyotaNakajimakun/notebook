@@ -1,0 +1,19 @@
+しょっちゅう忘れるのでメモ
+
+配列宣言
+
+array=( a b c d )
+echo ${array[*]}
+//出力
+a b c d
+
+配列ループ
+for item in ${array[@]}; do
+    echo $item
+done
+//出力
+a
+b
+c
+d
+
